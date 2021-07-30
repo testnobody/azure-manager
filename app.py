@@ -47,7 +47,7 @@ def login():
         username = request.form['userName']
         password = request.form['passWord']
 
-        if username == os.environ.get('adminusername') and password == os.environ.get('adminpassword'):
+        if username == os.environ.get('adminname') and password == os.environ.get('adminpassword'):
         #if username == 'adminusername' and password == 'adminpassword':
 
             session['username'] = username
