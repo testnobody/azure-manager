@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>账户 {{ account }} 管理中 <a class="go" href="/account/list"  title="GO!">返回</a></p>
+    <p>账户 {{ account }} 管理中 <a class="go" href="/account/list?account={{ account }}"  title="GO!">返回</a></p>
     <form method="post">
       <div>
           <p><label>root密码不输入默认为ppxwo123</label></p>
