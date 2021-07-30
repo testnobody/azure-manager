@@ -1,0 +1,10 @@
+{
+  "name": "azure-manager",
+  "description": "A azure-manager on Heroku",
+  "keywords": [
+    "azure",
+    "python",
+    "Heroku"
+  ],
+  "repository": "https://github.com/testnobody/azure-manager"
+}
