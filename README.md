@@ -1,7 +1,8 @@
-# Azure-manager
-Manage your VM in Azure using cookies.
+## Azure-manager
+# Manage your VM in Azure（multi users）.
+# 管理你在AZURE的机器 多用户
 
-Default VM infomation:
+## Default VM infomation:
 
 USERNAME : defaultuser<br>
 PASSWORD : Thisisyour.password1
