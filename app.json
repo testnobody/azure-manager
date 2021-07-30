@@ -7,7 +7,7 @@
     "Heroku"
   ],  
   "repository": "https://github.com/testnobody/azure-manager",
-  "env":{"adminusername": {
+  "env":{"adminname": {
             "description": "面板账户",
             "value": "admin"
         },
