@@ -1,9 +1,9 @@
 import threading
-from flask import Flask, render_template, request, url_for, redirect, flash, make_response,session
+from flask import Flask, render_template, request, url_for, redirect, flash, make_response
 import function
 from flask_sqlalchemy import SQLAlchemy
 import os
-from werkzeug.security import generate_password_hash, check_password_hash
+
 
 app = Flask(__name__)
 app.jinja_env.filters['zip'] = zip
