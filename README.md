@@ -6,6 +6,9 @@ Default VM infomation:
 USERNAME : defaultuser<br>
 PASSWORD : Thisisyour.password1
 
+USERNAME : root
+PASSWORD : defaultuserpassword
+
 ## 1.Install Python 3.9.4
 
 
