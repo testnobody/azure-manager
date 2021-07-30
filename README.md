@@ -8,14 +8,14 @@ PASSWORD : Thisisyour.password1
 
 ## 1.Install Python 3.9.4
 
-https://github.com/pyenv/pyenv-installer
+
 
 ## 2.Install Python Library
 
 pip install -r requirements.txt
 
-## 3.Set your Secret Key
-Set random string in app.py(line 8)
+~~## 3.Set your Secret Key
+~~Set random string in app.py(line 8)
 
 ## 4.RUN!!
 python app.py
@@ -27,4 +27,5 @@ A simple Python example application that's ready to run on Heroku.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-
+# 6.No login verification yet, do not use it on the public network 
+## 还没加入登陆页面，在公网慎用
