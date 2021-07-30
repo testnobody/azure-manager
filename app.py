@@ -10,6 +10,7 @@ app.jinja_env.filters['zip'] = zip
 # 请将 xxx 替换为随机字符
 app.config['SECRET_KEY'] = 'c2jf932hibfiuebvwievubheriuvberv'
 
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] =True
 
 DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:////tmp/flask_app.db')
 
