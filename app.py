@@ -1,5 +1,5 @@
 import threading
-from flask import Flask, render_template, request, url_for, redirect, flash, make_response
+from flask import Flask, render_template, request, url_for, redirect, flash, make_response,session,jsonify
 import function
 from flask_sqlalchemy import SQLAlchemy
 import os
@@ -10,10 +10,9 @@ app.jinja_env.filters['zip'] = zip
 # 请将 xxx 替换为随机字符
 app.config['SECRET_KEY'] = 'c2jf932hibfiuebvwievubheriuvberv'
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] =True
-#SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL?sslmode=require').replace('postgres://', 'postgresql://')
+
 DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:////tmp/flask_app.db')
-DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
 
@@ -40,15 +39,46 @@ class User(db.Model):
 
 
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        #logger.debug("login post method")
 
-@app.route('/')
+        username = request.form['userName']
+        password = request.form['passWord']
+
+        if username == os.environ.get('adminusername') and password == os.environ.get('adminpassword'):
+        #if username == 'adminusername' and password == 'adminpassword':
+
+            session['username'] = username
+            session['password'] = password
+            resp = make_response(render_template('index.html', users=User.query.all()))
+            resp.set_cookie('username', username)
+            return resp
+            #return jsonify({'status': '0', 'errmsg': 'login success!'})
+        else:
+            # return redirect(url_for('error'))
+            return jsonify({'status': '-1', 'errmsg': 'error account!'})
+
+    #logger.debug("login get method")
+    return render_template('login.html')
+
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    # 获取cookie账号信息
-    username = request.cookies.get('username')
-    password = request.cookies.get('password')
+    #logger.debug("index page")
+    #logger.debug("cookie name %s" % request.cookies.get('username'))
+
+    if 'username' in session:
+        #logger.debug("login user is %s" % flask_login.current_user)
+        #logger.debug('Logged in as %s' % escape(session['username']))
+        return render_template('index.html',  users=User.query.all())
+    else:
+        #logger.debug("you are not logged in")
+        return redirect(url_for('login'))
 
 
-    return render_template('index.html', users=User.query.all())
+
 
 
 
