@@ -7,6 +7,14 @@
     "Heroku"
   ],  
   "repository": "https://github.com/testnobody/azure-manager",
+  "env":{"adminusername": {
+            "description": "面板账户",
+            "value": "admin"
+        },
+	      "adminpassword": {
+            "description": "面板密码",
+            "value": "admin"
+        }},
   "scripts": {
   "postdeploy": "python -c 'from app import db; db.create_all()'"
   },
