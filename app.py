@@ -12,7 +12,7 @@ app.config['SECRET_KEY'] = 'c2jf932hibfiuebvwievubheriuvberv'
 
 
 DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:////tmp/flask_app.db')
-
+DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
 
