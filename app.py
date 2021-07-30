@@ -1,8 +1,9 @@
 import threading
-from flask import Flask, render_template, request, url_for, redirect, flash, make_response
+from flask import Flask, render_template, request, url_for, redirect, flash, make_response,session
 import function
 from flask_sqlalchemy import SQLAlchemy
 import os
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.jinja_env.filters['zip'] = zip
@@ -14,6 +15,8 @@ DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:////tmp/flask_app.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
+
+
 
 class User(db.Model):
 
@@ -34,11 +37,22 @@ class User(db.Model):
 
 
 
+
+
+
 @app.route('/')
 def index():
     # 获取cookie账号信息
+    username = request.cookies.get('username')
+    password = request.cookies.get('password')
+
 
     return render_template('index.html', users=User.query.all())
+
+
+
+
+
 
 
 @app.route('/account/add', methods=['GET', 'POST'])
@@ -64,47 +78,56 @@ def accountadd():
         flash('添加管理账户成功')
         return resp
 
-    return render_template('account.html', users=User.query.all())
+    return render_template('account.html')
 
 
 @app.route('/account/delete')
 def accountdel():
     account = request.args.get('account')
-    User.query.filter(User.account == account).delete()
+
+
+    dele = User.query.filter(User.account == account).first()
+    db.session.delete(dele)
+    db.session.commit()
+
+
+
+
+
     flash('删除账户成功')
+    resp = make_response(redirect(url_for('index')))
     return resp
 
 
 @app.route('/account/list')
 def list():
     account = request.args.get('account')
-    users = User.query.filter(User.account == account)
+    result = User.query.filter(User.account == account).all()
 
-
-    client_id = users.client_id
-    client_secret = users.client_secret
-    tenant_id =users.tenant_id
-    subscription_id = users.subscription_id
+    client_id = result[0].client_id
+    client_secret = result[0].client_secret
+    tenant_id = result[0].tenant_id
+    subscription_id = result[0].subscription_id
 
     credential = function.create_credential_object(tenant_id, client_id, client_secret)
 
-    dict = function.list(subscription_id, credential)
 
-    return render_template('list.html', dict=dict, account=account)
+
+    return render_template('list.html', dict=function.list(subscription_id, credential), account=account)
 
 
 @app.route('/account/vm/create', methods=['GET', 'POST'])
 def create_vm():
     account = request.args.get('account')
+    print(account)
 
     if request.method == 'POST':
-        users = User.query.filter(User.account == account)
+        result = User.query.filter(User.account == account).all()
 
-
-        client_id = users.client_id
-        client_secret = users.client_secret
-        tenant_id = users.tenant_id
-        subscription_id = users.subscription_id
+        client_id = result[0].client_id
+        client_secret = result[0].client_secret
+        tenant_id = result[0].tenant_id
+        subscription_id = result[0].subscription_id
 
 
 
@@ -114,6 +137,7 @@ def create_vm():
         size = request.form.get('size')
         os = request.form.get('os')
         set = request.form.get('set')
+        rootpwd=request.form.get('rootpwd')
         ## 此处为VM默认登陆密码
         username = "defaultuser"
         password = "Thisisyour.password1"
@@ -121,23 +145,23 @@ def create_vm():
             name = (tag + str(i + 1))
             function.create_resource_group(subscription_id, credential, name, location)
             threading.Thread(target=function.create_or_update_vm, args=(
-            subscription_id, credential, name, location, username, password, size, os)).start()
+            subscription_id, credential, name, location, username, password, size, os,rootpwd)).start()
         flash('创建中，请耐心等待VM创建完成，大约需要1-3分钟')
 
 
-    account = request.cookies.get('account')
+
     return render_template('vm.html', account=account)
 
 
 @app.route('/account/vm/delete/<string:tag>')
 def delete_vm(tag):
     account = request.args.get('account')
-    users = User.query.filter(User.account == account)
+    result = User.query.filter(User.account == account).all()
 
-    client_id = users.client_id
-    client_secret = users.client_secret
-    tenant_id = users.tenant_id
-    subscription_id = users.subscription_id
+    client_id = result[0].client_id
+    client_secret = result[0].client_secret
+    tenant_id = result[0].tenant_id
+    subscription_id = result[0].subscription_id
 
 
 
@@ -146,54 +170,59 @@ def delete_vm(tag):
     credential = function.create_credential_object(tenant_id, client_id, client_secret)
     threading.Thread(target=function.delete_vm, args=(subscription_id, credential, tag)).start()
     flash("删除中，请耐心等待1-3分钟")
-    return redirect(url_for('list'))
+
+
+    #dict[account] = function.list(subscription_id, credential)
+    return render_template('list.html', dict=function.list(subscription_id, credential), account=account)
 
 
 @app.route('/account/vm/start/<string:tag>')
 def start_vm(tag):
     account = request.args.get('account')
 
-    users = User.query.filter(User.account == account)
+    result = User.query.filter(User.account == account).all()
 
-    client_id = users.client_id
-    client_secret = users.client_secret
-    tenant_id = users.tenant_id
-    subscription_id = users.subscription_id
+    client_id = result[0].client_id
+    client_secret = result[0].client_secret
+    tenant_id = result[0].tenant_id
+    subscription_id = result[0].subscription_id
 
     credential = function.create_credential_object(tenant_id, client_id, client_secret)
     threading.Thread(target=function.start_vm, args=(subscription_id, credential, tag)).start()
     flash("开机中，请耐心等待1-3分钟")
-    return redirect(url_for('list'))
+    #dict[account] = function.list(subscription_id, credential)
+    return render_template('list.html', dict=function.list(subscription_id, credential), account=account)
 
 
 @app.route('/account/vm/stop/<string:tag>')
 def stop_vm(tag):
     account = request.args.get('account')
 
-    users = User.query.filter(User.account == account)
+    result = User.query.filter(User.account == account).all()
 
-    client_id = users.client_id
-    client_secret = users.client_secret
-    tenant_id = users.tenant_id
-    subscription_id = users.subscription_id
+    client_id = result[0].client_id
+    client_secret = result[0].client_secret
+    tenant_id = result[0].tenant_id
+    subscription_id = result[0].subscription_id
 
 
     credential = function.create_credential_object(tenant_id, client_id, client_secret)
     threading.Thread(target=function.stop_vm, args=(subscription_id, credential, tag)).start()
     flash("关机中，请耐心等待1-3分钟")
-    return redirect(url_for('list'))
+    #dict[account] = function.list(subscription_id, credential)
+    return render_template('list.html',  dict=function.list(subscription_id, credential), account=account)
 
 
 @app.route('/account/vm/changeip/<string:tag>')
 def changeip_vm(tag):
     account = request.args.get('account')
 
-    users = User.query.filter(User.account == account)
+    result = User.query.filter(User.account == account).all()
 
-    client_id = users.client_id
-    client_secret = users.client_secret
-    tenant_id = users.tenant_id
-    subscription_id = users.subscription_id
+    client_id = result[0].client_id
+    client_secret = result[0].client_secret
+    tenant_id = result[0].tenant_id
+    subscription_id = result[0].subscription_id
 
 
     credential = function.create_credential_object(tenant_id, client_id, client_secret)
@@ -206,4 +235,5 @@ def changeip_vm(tag):
 
 
 if __name__ == '__main__':
+    db.create_all()
     app.run()
