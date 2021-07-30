@@ -11,9 +11,13 @@
             "description": "面板账户",
             "value": "admin"
         },
-	      "adminpassword": {
+	 "adminpassword": {
             "description": "面板密码",
             "value": "admin"
+        },
+	 "random_key": {
+            "description": "随便输入几个字符",
+            "value": "rhay21qwjada"
         }},
   "scripts": {
   "postdeploy": "python -c 'from app import db; db.create_all()'"
