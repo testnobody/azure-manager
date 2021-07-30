@@ -20,7 +20,7 @@ Set random string in app.py(line 8)
 ## 4.RUN!!
 python app.py
 
-Visit 127.0.0.1:8888 and enjoy yourself.
+Visit 127.0.0.1:5000 and enjoy yourself.
 
 ## 5.deploy in heroku!!
 A simple Python example application that's ready to run on Heroku.
