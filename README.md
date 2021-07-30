@@ -22,4 +22,9 @@ python app.py
 
 Visit 127.0.0.1:8888 and enjoy yourself.
 
+## 5.deploy in heroku!!
+A simple Python example application that's ready to run on Heroku.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 
