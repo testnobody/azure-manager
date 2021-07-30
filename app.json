@@ -7,5 +7,9 @@
     "Heroku"
   ],
   
-  "repository": "https://github.com/testnobody/azure-manager"
+  
+  "repository": "https://github.com/testnobody/azure-manager",
+  "scripts": {
+    "postdeploy": "python app.py"
+  }
 }
