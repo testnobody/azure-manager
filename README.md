@@ -34,5 +34,5 @@ A simple Python example application that's ready to run on Heroku.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-# 6.No login verification yet, do not use it on the public network 
-## 还没加入登陆页面，在公网慎用
+# 6.面板登录的身份验证有点简陋，担心安全性的在公网慎用哦
+
