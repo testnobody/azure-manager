@@ -4,6 +4,8 @@ import function
 from flask_sqlalchemy import SQLAlchemy
 import os
 
+defaultadmin ='admin'
+defaultpass = 'admin123'
 
 app = Flask(__name__)
 app.jinja_env.filters['zip'] = zip
@@ -47,7 +49,7 @@ def login():
         username = request.form['userName']
         password = request.form['passWord']
 
-        if username == os.environ.get('adminname') and password == os.environ.get('adminpassword'):
+        if username == os.environ.get('adminname',defaultadmin) and password == os.environ.get('adminpassword',defaultpass):
         #if username == 'adminusername' and password == 'adminpassword':
 
             session['username'] = username
