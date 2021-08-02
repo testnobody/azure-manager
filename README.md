@@ -7,6 +7,12 @@
 ### 新增windows机器选择（2012-2019），硬盘默认64GB，建议选择2012/2016配置
 ### 修复了一个身份验证BUG，增加安全性，但是还是很简陋，尽量保护好自己的管理网址和登录管理信息哦。
 
+## 5.Or you can deploy in heroku!!
+### 或者你可以忽略以上所有步骤，一键部署到heroku
+A simple Python example application that's ready to run on Heroku.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 ## Default VM infomation:
 ### 开出来的机器默认登录密码
 windows/linux通用默认账号密码
