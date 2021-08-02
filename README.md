@@ -1,3 +1,4 @@
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 # Azure-manager
 ## Manage your VM in Azure（multi users）.
 ## 管理你在AZURE的机器 多用户
