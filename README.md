@@ -36,14 +36,14 @@ python app.py
 
 Visit 127.0.0.1:5000 and enjoy yourself.
 
-## 5.deploy in heroku!!
-### 一键部署到heroku
+## 5.Or you can deploy in heroku!!
+### 或者你可以忽略以上所有步骤，一键部署到heroku
 A simple Python example application that's ready to run on Heroku.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-## 6.面板登录的身份验证有点简陋，担心安全性的在公网慎用哦
+## notice1.面板登录的身份验证有点简陋，担心安全性的在公网慎用哦
 
-## 7. Azure key 获取方法
+## notice2. Azure key 获取方法
 登录AZURE，在portal.azure.com右上角选择命令行bash 输入 az ad sp create-for-rbac --name randomstring
 
