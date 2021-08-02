@@ -143,7 +143,7 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
                                                                   "storage_profile": {
                                                                       "osDisk":{
                                                                           "createOption":"fromImage",
-                                                                          "diskSizeGB":30
+                                                                          "diskSizeGB":17
                                                                       },
                                                                       "image_reference": {
                                                                           "offer": offer,
