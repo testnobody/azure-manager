@@ -45,7 +45,12 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
     PASSWORD = password
     ROOT_PWD = rootpwd
     SIZE = size
-    if os == "ubuntu18":
+    if   os == "ubuntu20":
+        publisher = "Canonical"
+        offer = "0001-com-ubuntu-server-focal"
+        sku = "20_04-lts"
+        version = "latest"
+    elif os == "ubuntu18":
         publisher = "Canonical"
         offer = "UbuntuServer"
         sku = "18.04-LTS"
