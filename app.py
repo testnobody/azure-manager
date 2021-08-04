@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, url_for, redirect, flash, mak
 import function
 from flask_sqlalchemy import SQLAlchemy
 import os
+import re
 
 defaultadmin ='admin'
 defaultpass = 'admin123'
@@ -188,12 +189,19 @@ def create_vm():
 
             username = request.form.get('vmusername')#"defaultuser"
             password = request.form.get('vmpasswd')#"Thisisyour.password1"
-            for i in range(int(set)):
-                name = (tag + str(i + 1))
-                function.create_resource_group(subscription_id, credential, name, location)
-                threading.Thread(target=function.create_or_update_vm, args=(
-                subscription_id, credential, name, location, username, password, size, os,rootpwd,storgesize)).start()
-            flash('创建中，请耐心等待VM创建完成，大约需要1-3分钟')
+
+            char = re.findall(r'[a-z]', password)
+            bigchar = re.findall(r'[A-Z]', password)
+            num = re.findall(r'[0-9]', password)
+            if len(num) * len(bigchar) * len(char) == 0 or len(password) < 12 or len(password) > 72:
+                flash('VM密码不合规，请输入至少12位密码，且包含大小写字母和数字')
+            else:
+                for i in range(int(set)):
+                    name = (tag + str(i + 1))
+                    function.create_resource_group(subscription_id, credential, name, location)
+                    threading.Thread(target=function.create_or_update_vm, args=(
+                    subscription_id, credential, name, location, username, password, size, os,rootpwd,storgesize)).start()
+                flash('创建中，请耐心等待VM创建完成，大约需要1-3分钟')
 
 
 
