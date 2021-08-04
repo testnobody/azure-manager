@@ -121,7 +121,7 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
                                                                  }
                                                                  )
     ip_address_result = poller.result()
-    print("Creaate Network Interfaces")
+    print("Create Network Interfaces")
     poller = network_client.network_interfaces.create_or_update(RESOURCE_GROUP_NAME,
                                                                 NIC_NAME,
                                                                 {
