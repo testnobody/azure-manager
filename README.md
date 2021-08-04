@@ -2,6 +2,11 @@
 ## Manage your VM in Azure（multi users）.
 ## 管理你在AZURE的机器 多用户
 
+
+## 更新中版本会遇到一些BUG，欢迎提issues一起探讨，相对稳定版本见预发布版
+
+https://github.com/testnobody/azure-manager/tree/v0.6
+
 ### 8.4日更新:
 
 新增b1ls机型选择，硬盘默认64GB【可以选择30-1024GB】；
