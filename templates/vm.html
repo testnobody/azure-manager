@@ -4,16 +4,17 @@
     <p>账户 {{ account }} 管理中 <a class="go" href="/account/list?account={{ account }}"  title="GO!">返回</a></p>
     <form method="post">
       <div>
-          <p><label>root密码不输入默认为ppxwo123</label></p>
-          <p><label>tag <input type="text" name="tag" autocomplete="off" required></label></p>
-          <p><label>root密码 <input type="text" name="rootpwd" autocomplete="off"></label></p>
+          <p><label>创建资源组名字 <input type="text" name="tag" autocomplete="off" required></label></p>
+          <p><label>VM登陆用户名 <input type="text" name="vmusername" value="defaultuser" autocomplete="off"></label></p>
+          <p><label>VM登陆密码 <input type="text" name="vmpasswd" value="Thisisyour.password1" autocomplete="off"></label></p>
+          <p><label>root密码 <input type="text" name="rootpwd" value="rootpassword1" autocomplete="off"></label></p>
         <p><label>区域 <select name="location" required>
+            <option value="eastasia">香港</option>
             <option value="westus2">美国西2</option>
             <option value="westus3">美国西3</option>
             <option value="centralus">美国中</option>
             <option value="eastus">美西东</option>
             <option value="southeastasia">新加坡</option>
-            <option value="eastasia">香港</option>
             <option value="japanwest">日本西</option>
             <option value="japaneast">日本东</option>
             <option value="koreacentral">韩国中</option>
@@ -21,11 +22,20 @@
         </select></label></p>
         <p><label>型号 <select name="size" required>
             <option value="Standard_B1s">B1s</option>
+            <option value="Standard_B1ls">B1ls</option>
             <option value="Standard_B2s">B2s</option>
             <option value="Standard_D2s_v3">D2s</option>
             <option value="Standard_D4s_v3">D4s</option>
             <option value="Standard_F2s">F2s</option>
             <option value="Standard_F4s">F4s</option>
+        </select></label></p>
+        <p><label>硬盘大小 <select name="storgesize" required>
+            <option value=64>64</option>
+            <option value=128>128</option>
+            <option value=256>256</option>
+            <option value=512>512</option>
+            <option value=1024>1024</option>
+            <option value=30>30</option>
         </select></label></p>
         <p><label>数量 <select name="set" required>
             <option value="1">创建1台</option>
