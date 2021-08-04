@@ -183,14 +183,16 @@ def create_vm():
             os = request.form.get('os')
             set = request.form.get('set')
             rootpwd=request.form.get('rootpwd')
+            storgesize=request.form.get('storgesize')
             ## 此处为VM默认登陆密码
-            username = "defaultuser"
-            password = "Thisisyour.password1"
+
+            username = request.form.get('vmusername')#"defaultuser"
+            password = request.form.get('vmpasswd')#"Thisisyour.password1"
             for i in range(int(set)):
                 name = (tag + str(i + 1))
                 function.create_resource_group(subscription_id, credential, name, location)
                 threading.Thread(target=function.create_or_update_vm, args=(
-                subscription_id, credential, name, location, username, password, size, os,rootpwd)).start()
+                subscription_id, credential, name, location, username, password, size, os,rootpwd,storgesize)).start()
             flash('创建中，请耐心等待VM创建完成，大约需要1-3分钟')
 
 
