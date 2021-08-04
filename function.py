@@ -3,6 +3,7 @@ from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.network import NetworkManagementClient
 from azure.mgmt.compute import ComputeManagementClient
 from azure.common.credentials import ServicePrincipalCredentials
+import json
 from azure.mgmt.compute.models import DiskCreateOption
 
 import time,base64
@@ -221,16 +222,25 @@ def list(subscription_id, credential):
     compute_client = ComputeManagementClient(credential, subscription_id)
     info2 = compute_client.virtual_machines.list_all()
     iplist = []
-    taglist = []
+    ipnames = []
+
+    
     for info in info:
         info = str(info)
-        info = str(info).replace("'", "").replace('"', "")
-        info = info.split(", ")[-7].split(" ")[1]
-        iplist.append(info)
+        info =info.replace('"', '').replace('/', '').replace('None', '"None"').replace("'", '"').replace("<", '"').replace(">", '"')
+        info = json.loads(info)
+        ipname=info["name"]
+        ipname=ipname.replace('ip-', '')
+        ipadd = info["ip_address"]
+        iplist.append(ipadd)
+        ipnames.append(ipname)
+
     for info2 in info2:
         info2 = str(info2)
         info2 = str(info2).replace("'", "").replace('"', "")
         info2 = info2.split(", ")[2].split(" ")[1]
-        taglist.append(info2)
-    dict = {"ip": iplist, "tag": taglist}
+        if info2 not in ipnames:
+            ipnames.append(info2)
+            iplist.append("None")
+    dict = {"ip": iplist, "tag": ipnames}
     return dict
