@@ -30,7 +30,7 @@ def create_resource_group(subscription_id, credential, tag, location):
                                                                  )
 
 
-def create_or_update_vm(subscription_id, credential, tag, location, username, password, size, os,rootpwd):
+def create_or_update_vm(subscription_id, credential, tag, location, username, password, size, os,rootpwd,storgesize):
     global publisher, offer, sku
     compute_client = ComputeManagementClient(credential, subscription_id)
     RESOURCE_GROUP_NAME = tag
@@ -45,6 +45,7 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
     PASSWORD = password
     ROOT_PWD = rootpwd
     SIZE = size
+    STORGESIZE=int(storgesize)
     if   os == "ubuntu20":
         publisher = "Canonical"
         offer = "0001-com-ubuntu-server-focal"
@@ -148,7 +149,7 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
                                                                   "storage_profile": {
                                                                       "osDisk":{
                                                                           "createOption":"fromImage",
-                                                                          "diskSizeGB":64
+                                                                          "diskSizeGB":STORGESIZE
                                                                       },
                                                                       "image_reference": {
                                                                           "offer": offer,
