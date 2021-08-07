@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>{{ account }} 管理中 <a class="go" href="/account/vm/create?account={{ account }}" title="GO!">新建虚拟机</a> <a class="go" href="/account/list?account={{ account }}" title="GO!">刷新账户状态</a></p>
+    <p>{{ account }} ：订阅状态</p>
+    <ul  class="list">
+        {% for name, id_status in subscription_list["name"]|zip(subscription_list["id_status"]) %}
+            <li>{{ name }}-{{ id_status }}
+            </li>
+        {% endfor %}{# 使用 endfor 标签结束 for 语句 #}
+    </ul>
+    <p>{{ account }} VM管理 <a class="go" href="/account/vm/create?account={{ account }}" title="GO!">新建虚拟机</a> <a class="go" href="/account/list?account={{ account }}" title="GO!">刷新账户状态</a></p>
     <ul  class="list">
         {% for ip, tag in dict["ip"]|zip(dict["tag"]) %}
         <li>{{ tag }} - {{ ip }}
