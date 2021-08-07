@@ -229,9 +229,8 @@ def delete_vm(tag):
         threading.Thread(target=function.delete_vm, args=(subscription_id, credential, tag)).start()
         flash("删除中，请耐心等待1-3分钟")
 
-
-        #dict[account] = function.list(subscription_id, credential)
-        return render_template('list.html', dict=function.list(subscription_id, credential), account=account)
+        dict, subscription_list = function.list(subscription_id, credential)
+        return render_template('list.html', dict=dict, subscription_list=subscription_list, account=account)
     else:
         #logger.debug("you are not logged in")
         return redirect(url_for('login'))
@@ -251,8 +250,8 @@ def start_vm(tag):
         credential = function.create_credential_object(tenant_id, client_id, client_secret)
         threading.Thread(target=function.start_vm, args=(subscription_id, credential, tag)).start()
         flash("开机中，请耐心等待1-3分钟")
-        #dict[account] = function.list(subscription_id, credential)
-        return render_template('list.html', dict=function.list(subscription_id, credential), account=account)
+        dict, subscription_list = function.list(subscription_id, credential)
+        return render_template('list.html', dict=dict, subscription_list=subscription_list, account=account)
     else:
         #logger.debug("you are not logged in")
         return redirect(url_for('login'))
@@ -273,8 +272,8 @@ def stop_vm(tag):
         credential = function.create_credential_object(tenant_id, client_id, client_secret)
         threading.Thread(target=function.stop_vm, args=(subscription_id, credential, tag)).start()
         flash("关机中，请耐心等待1-3分钟")
-        #dict[account] = function.list(subscription_id, credential)
-        return render_template('list.html',  dict=function.list(subscription_id, credential), account=account)
+        dict, subscription_list = function.list(subscription_id, credential)
+        return render_template('list.html', dict=dict, subscription_list=subscription_list, account=account)
     else:
         #logger.debug("you are not logged in")
         return redirect(url_for('login'))
