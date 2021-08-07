@@ -153,9 +153,8 @@ def list():
 
         credential = function.create_credential_object(tenant_id, client_id, client_secret)
 
-
-
-        return render_template('list.html', dict=function.list(subscription_id, credential), account=account)
+        dict, subscription_list = function.list(subscription_id, credential)
+        return render_template('list.html',dict=dict, subscription_list=subscription_list, account=account)
     else:
         #logger.debug("you are not logged in")
         return redirect(url_for('login'))
