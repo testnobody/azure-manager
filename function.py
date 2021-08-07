@@ -4,9 +4,9 @@ from azure.mgmt.network import NetworkManagementClient
 from azure.mgmt.compute import ComputeManagementClient
 from azure.common.credentials import ServicePrincipalCredentials
 import json
-from azure.mgmt.compute.models import DiskCreateOption
 
-import time,base64
+from azure.mgmt.subscription import SubscriptionClient
+import time, base64
 
 
 def create_credential_object(tenant_id, client_id, client_secret):
@@ -31,7 +31,7 @@ def create_resource_group(subscription_id, credential, tag, location):
                                                                  )
 
 
-def create_or_update_vm(subscription_id, credential, tag, location, username, password, size, os,rootpwd,storgesize):
+def create_or_update_vm(subscription_id, credential, tag, location, username, password, size, os, rootpwd, storgesize):
     global publisher, offer, sku
     compute_client = ComputeManagementClient(credential, subscription_id)
     RESOURCE_GROUP_NAME = tag
@@ -46,8 +46,8 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
     PASSWORD = password
     ROOT_PWD = rootpwd
     SIZE = size
-    STORGESIZE=int(storgesize)
-    if   os == "ubuntu20":
+    STORGESIZE = int(storgesize)
+    if os == "ubuntu20":
         publisher = "Canonical"
         offer = "0001-com-ubuntu-server-focal"
         sku = "20_04-lts"
@@ -92,7 +92,6 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
         offer = "UbuntuServer"
         sku = "18.04-LTS"
         version = "latest"
-
 
     network_client = NetworkManagementClient(credential, subscription_id)
     print("Create VNET")
@@ -140,7 +139,7 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
     s = "IyEvYmluL2Jhc2gKZWNobyByb290OnBweHdvMTIzIHxzdWRvIGNocGFzc3dkIHJvb3QKc3VkbyBzZWQgLWkgJ3MvXi4qUGVybWl0Um9vdExvZ2luLiovUGVybWl0Um9vdExvZ2luIHllcy9nJyAvZXRjL3NzaC9zc2hkX2NvbmZpZzsKc3VkbyBzZWQgLWkgJ3MvXi4qUGFzc3dvcmRBdXRoZW50aWNhdGlvbi4qL1Bhc3N3b3JkQXV0aGVudGljYXRpb24geWVzL2cnIC9ldGMvc3NoL3NzaGRfY29uZmlnOwpzdWRvIHNlcnZpY2Ugc3NoZCByZXN0YXJ0"
     if (ROOT_PWD != ""):
         d = base64.b64decode(s).decode('latin-1')
-        d = d.replace("ppxwo123",ROOT_PWD)
+        d = d.replace("ppxwo123", ROOT_PWD)
         CUSTOM_DATA = base64.b64encode(d.encode("utf-8")).decode('latin-1')
     else:
         CUSTOM_DATA = s
@@ -148,9 +147,9 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
                                                               {
                                                                   "location": LOCATION,
                                                                   "storage_profile": {
-                                                                      "osDisk":{
-                                                                          "createOption":"fromImage",
-                                                                          "diskSizeGB":STORGESIZE
+                                                                      "osDisk": {
+                                                                          "createOption": "fromImage",
+                                                                          "diskSizeGB": STORGESIZE
                                                                       },
                                                                       "image_reference": {
                                                                           "offer": offer,
@@ -224,13 +223,14 @@ def list(subscription_id, credential):
     iplist = []
     ipnames = []
 
-    
     for info in info:
         info = str(info)
-        info =info.replace('"', '').replace('/', '').replace('None', '"None"').replace("'", '"').replace("<", '"').replace(">", '"')
+        info = info.replace('"', '').replace('/', '').replace('None', '"None"').replace("'", '"').replace("<",
+                                                                                                          '"').replace(
+            ">", '"')
         info = json.loads(info)
-        ipname=info["name"]
-        ipname=ipname.replace('ip-', '')
+        ipname = info["name"]
+        ipname = ipname.replace('ip-', '')
         ipadd = info["ip_address"]
         iplist.append(ipadd)
         ipnames.append(ipname)
@@ -243,4 +243,16 @@ def list(subscription_id, credential):
             ipnames.append(info2)
             iplist.append("None")
     dict = {"ip": iplist, "tag": ipnames}
-    return dict
+
+    subscription_client = SubscriptionClient(credential)
+    names = []
+    idstatus = []
+    for subscription in subscription_client.subscriptions.list():
+        names.append(subscription.display_name)
+        idstatus.append(subscription.subscription_id + " " + str(subscription.state).replace('SubscriptionState.', ''))
+    dic = {"name": names, "id_status": idstatus}
+
+
+    return dict,dic
+
+
