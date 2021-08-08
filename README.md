@@ -7,6 +7,8 @@
 
 https://github.com/testnobody/azure-manager/tree/v0.6
 ##
+### 8.8日更新:
+更新数据库存放位置为当前目录下的flask_app.db，修复windows下部署时数据库链接失败的问题。先前部署的linux用户如要更新可以将/tmp/flask_app.db复制到项目当前目录即可继续使用
 ### 8.7日更新:
 新增订阅状态查询
 ### 8.4日更新:
