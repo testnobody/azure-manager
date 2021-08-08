@@ -14,7 +14,7 @@ app.jinja_env.filters['zip'] = zip
 app.config['SECRET_KEY'] = os.environ.get('random_key','c2jf932hibfiuebvwievubheriuvberv')
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:////tmp/flask_app.db')
+DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///flask_app.db')
 DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 db = SQLAlchemy(app)
