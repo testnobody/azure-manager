@@ -14,6 +14,7 @@ def create_credential_object(tenant_id, client_id, client_secret):
     tenant_id = tenant_id
     client_id = client_id
     client_secret = client_secret
+    print(tenant_id," ",client_id," ",client_secret)
     credential = ServicePrincipalCredentials(tenant=tenant_id, client_id=client_id, secret=client_secret)
     return credential
 
