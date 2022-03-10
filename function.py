@@ -48,10 +48,15 @@ def create_or_update_vm(subscription_id, credential, tag, location, username, pa
     ROOT_PWD = rootpwd
     SIZE = size
     STORGESIZE = int(storgesize)
-    if os == "ubuntu20":
+    if os == "debian11":
+        publisher = "Debian"
+        offer = "debian-11"
+        sku = "11-gen2"
+        version = "latest"
+    elif os == "ubuntu20":
         publisher = "Canonical"
         offer = "0001-com-ubuntu-server-focal"
-        sku = "20_04-lts"
+        sku = "20_04-lts-gen2"
         version = "latest"
     elif os == "ubuntu18":
         publisher = "Canonical"
